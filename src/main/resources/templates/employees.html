@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Employee</title>
+</head>
+<body>
+    <div class="container mt-3">
+
+        <h1 class="text-center">Add Employee</h1>
+
+    <form class="main-form" th:action="@{/saveEmployee}" th:method="POST" th:object="${employee}">
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Name" name="name" th:field="*{name}">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Surname" name="surname" th:field="*{surname}">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Country" name="country" th:field="*{country}">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="City" name="city" th:field="*{city}">
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Address" name="address" th:field="*{address}">
+        </div>
+
+        <button type="submit" class="btn btn-success">Save</button>
+
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Address</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+
+            <tbody class="table table-hover">
+                <tr th:each="row : ${employees}">
+                    <td th:text="${row.name}">a</td>
+                    <td th:text="${row.surname}">a</td>
+                    <td th:text="${row.country}">a</td>
+                    <td th:text="${row.city}">a</td>
+                    <td th:text="${row.address}">a</td>
+                    <td class="d-flex justify-content-around">
+                        <form th:action="@{/goToUpdate/} + ${row.id}" th:method="GET">
+                            <button class="btn btn-success">Update</button>
+                        </form>
+                        <form th:action="@{/delete/} + ${row.id}" th:method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+            
+        </table>
+    </div>
+</div>
+    
+</body>
+</html>
