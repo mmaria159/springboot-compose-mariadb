@@ -13,12 +13,11 @@ services:
      - SPRING_DATASOURCE_USERNAME=root
      - SPRING_DATASOURCE_PASSWORD=root
      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MariaDBDialect
-     - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+     - SPRING_JPA_HIBERNATE_DDL_AUTO=create
   mariadbapp:
     image: mariadb
     ports:
       - "3306:3306"
-    restart: always
     environment:
      - MARIADB_USER=root
      - MARIADB_ROOT_PASSWORD=root
