@@ -3,13 +3,11 @@ package com.company.controller;
 import com.company.model.Employee;
 import com.company.repo.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
-@Controller
+@RestController
 public class MyController {
 
     private final EmployeeRepository employeeRepository;
@@ -19,51 +17,19 @@ public class MyController {
         this.employeeRepository = employeeRepository;
     }
 
-
-    @GetMapping("/")
-    public String getAllEmployees(Model model) {
-        Iterable<Employee> employees = employeeRepository.findAll();
-        model.addAttribute("employees", employees);
-        model.addAttribute("employee", new Employee());
-        return "employees";
+    @GetMapping("/employees")
+    List<Employee> all() {
+        return employeeRepository.findAll();
     }
 
-    @PostMapping("/saveEmployee")
-    public String saveEmployee(@ModelAttribute("employee") Employee employee) {
-        employeeRepository.save(employee);
-        return "redirect:/";
+    @PostMapping("/employees")
+    Employee newEmployee(@RequestBody Employee newEmployee) {
+        return employeeRepository.save(newEmployee);
     }
 
-    @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id) {
-        Optional<Employee> emp = employeeRepository.findById(id);
-        Employee employee = emp.get();
-        employeeRepository.delete(employee);
-        return "redirect:/";
+    @DeleteMapping("/employees/{id}")
+    void deleteEmployee(@PathVariable Integer id) {
+        employeeRepository.deleteById(id);
     }
 
-    @GetMapping("/goToUpdate/{id}")
-    public String goToUpdate(@PathVariable("id") int id, Model model) {
-        Optional<Employee> emp = employeeRepository.findById(id);
-        Employee employee = emp.get();
-        model.addAttribute("employee", employee);
-        return "updateEmployee";
-    }
-    @PostMapping("/editEmployee/{id}")
-    public String editEmployee(@ModelAttribute("id") int id,
-                               @RequestParam String name,
-                               @RequestParam String surname,
-                               @RequestParam String country,
-                               @RequestParam String city,
-                               @RequestParam String address) {
-        Optional<Employee> emp = employeeRepository.findById(id);
-        Employee employee = emp.get();
-        employee.setName(name);
-        employee.setSurname(surname);
-        employee.setCountry(country);
-        employee.setCity(city);
-        employee.setAddress(address);
-        employeeRepository.save(employee);
-        return "redirect:/";
-    }
 }

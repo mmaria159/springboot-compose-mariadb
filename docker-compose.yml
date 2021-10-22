@@ -1,0 +1,25 @@
+version: '3'
+services:
+  app:
+    container_name: springboot-mariadb-employee
+    image: springboot-mariadb-employee
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mariadbapp
+    environment:
+     - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadbapp:3306/mariadb
+     - SPRING_DATASOURCE_USERNAME=root
+     - SPRING_DATASOURCE_PASSWORD=root
+     - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MariaDBDialect
+     - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  mariadbapp:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+     - MARIADB_USER=root
+     - MARIADB_ROOT_PASSWORD=root
+     - MARIADB_DATABASE=mariadb
